@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Barreiros Pönicke | Full Stack WebDev</title>
+    <title>Daniel Barreiros Pönicke | Full Stack Pixel Dev</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     
-    <!-- Icons (Lucide) - We will style them to look pixelated -->
+    <!-- Icons (Lucide) -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
@@ -26,10 +26,10 @@
                     },
                     colors: {
                         nature: {
-                            base: '#111111',       /* Negro puro para contraste pixel */
+                            base: '#111111',       /* Negro puro */
                             concrete: '#2d2d2d',   /* Gris oscuro plano */
                             moss: '#4A5D44',       /* Verde militar */
-                            mossLight: '#769966',  /* Verde más brillante para highlights */
+                            mossLight: '#769966',  /* Verde más brillante */
                             wood: '#8C7B6C',       /* Marrón desaturado */
                             sand: '#E3E1D9',       /* Crema */
                             ember: '#FF6B4A',      /* Naranja pixel brillante */
@@ -37,9 +37,8 @@
                         }
                     },
                     backgroundImage: {
-                        'grid-pattern': "linear-gradient(to right, #2d2d2d 1px, transparent 1px), linear-gradient(to bottom, #2d2d2d 1px, transparent 1px)",
-                        // Noise SVG Pattern
-                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%221%22/%3E%3C/svg%3E')",
+                        // Simple CSS Grid Pattern (No images, pure CSS)
+                        'grid-pattern': "linear-gradient(to right, #222 1px, transparent 1px), linear-gradient(to bottom, #222 1px, transparent 1px)",
                     },
                     boxShadow: {
                         'voxel': '4px 4px 0px 0px rgba(0,0,0,0.5)',
@@ -53,61 +52,27 @@
     </script>
 
     <style>
-        /* Retro Gaming Reset */
+        /* General Reset */
         body {
             background-color: #111111;
             color: #E3E1D9;
             overflow-x: hidden;
-            image-rendering: pixelated;
+            /* Ensures images keep hard edges for pixel look */
+            image-rendering: pixelated; 
         }
 
-        /* Combined Retro Texture (Scanlines + Noise) */
-        .retro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 100;
-        }
-
-        /* Scanlines Layer */
-        .retro-overlay::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(18, 16, 16, 0) 50%,
-                rgba(0, 0, 0, 0.25) 50%
-            );
-            background-size: 100% 4px;
-            opacity: 0.6;
-        }
-
-        /* Static Noise Layer */
-        .retro-overlay::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%221%22/%3E%3C/svg%3E');
-            opacity: 0.08; /* Subtle grain */
-            mix-blend-mode: overlay;
-        }
-
-        /* Voxel 3D Text Effect */
+        /* Voxel 3D Text Effect using text-shadow */
         .text-voxel {
             text-shadow: 
-                2px 2px 0px #9A3A1A,
-                4px 4px 0px #4A5D44;
+                3px 3px 0px #9A3A1A,
+                6px 6px 0px #4A5D44;
         }
 
-        /* Pixel Reveal Animation (Steppy) */
+        /* CSS Animation for Reveal */
         .reveal {
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.5s steps(4, end);
+            transition: all 0.5s steps(4, end); /* Steps creates the jerky "frame by frame" feel */
         }
 
         .reveal.active {
@@ -119,7 +84,7 @@
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
 
-        /* Custom Scrollbar (Blocky) */
+        /* Custom Blocky Scrollbar */
         ::-webkit-scrollbar {
             width: 16px;
             background: #111;
@@ -137,7 +102,7 @@
             background: #FF6B4A;
         }
 
-        /* Glitch Animation for Hover */
+        /* Glitch Text Effect on Hover (Pure CSS) */
         @keyframes glitch-skew {
             0% { transform: skew(0deg); }
             20% { transform: skew(-2deg); }
@@ -158,29 +123,18 @@
             100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-            animation: marquee 20s linear infinite; /* Faster for arcade feel */
-        }
-
-        /* Pixel Border Utility */
-        .border-pixel {
-            box-shadow: 
-                -4px 0 0 0 #000,
-                4px 0 0 0 #000,
-                0 -4px 0 0 #000,
-                0 4px 0 0 #000;
-            margin: 4px;
+            animation: marquee 20s linear infinite;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-nature-ember selection:text-black relative cursor-crosshair">
+<body class="antialiased selection:bg-nature-ember selection:text-black relative">
 
-    <!-- Retro Overlay (TV Lines + Noise) -->
-    <div class="retro-overlay"></div>
+    <!-- REMOVED: .retro-overlay (Scanlines/Noise) for a cleaner look -->
 
     <!-- Navigation (HUD Style) -->
-    <nav class="fixed top-0 w-full z-40 px-4 py-4 border-b-4 border-nature-concrete bg-nature-base/90 backdrop-blur-sm">
+    <nav class="fixed top-0 w-full z-40 px-4 py-4 border-b-4 border-nature-concrete bg-nature-base/95 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <span class="font-pixel text-xs md:text-sm text-nature-ember animate-pulse">&gt; DBP_SYSTEM.EXE</span>
+            <span class="font-pixel text-xs md:text-sm text-nature-ember hover:animate-pulse cursor-default">&gt; DBP_SYSTEM.EXE</span>
             <div class="hidden md:flex gap-8 text-xl tracking-widest uppercase">
                 <a href="#about" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[SOBRE MÍ]</a>
                 <a href="#stack" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[STACK]</a>
@@ -193,19 +147,16 @@
         </div>
     </nav>
 
-    <!-- Hero Section (Voxel World) -->
+    <!-- Hero Section (Voxel World - Pure CSS Shapes) -->
     <section class="min-h-screen flex flex-col justify-center px-6 relative overflow-hidden bg-[size:40px_40px] bg-grid-pattern">
-        <!-- Voxel Decorative Cubes -->
-        <div class="absolute top-1/4 right-10 w-32 h-32 bg-nature-moss shadow-voxel border-4 border-black rotate-12 opacity-50"></div>
         
-        <!-- Moved the dark ember cube to the top-left area to balance the composition -->
-        <div class="absolute top-1/3 left-1/4 w-24 h-24 bg-nature-emberDark shadow-voxel border-4 border-black -rotate-6 opacity-60"></div>
-        
-        <!-- MOVED: Bouncing Orange Cube to Bottom Left -->
+        <!-- CSS Voxels (Divs with shadows and borders) -->
+        <div class="absolute top-1/4 right-10 w-32 h-32 bg-nature-moss shadow-voxel border-4 border-black rotate-12 opacity-80 hover:rotate-45 transition-transform duration-700"></div>
+        <div class="absolute top-1/3 left-1/4 w-24 h-24 bg-nature-emberDark shadow-voxel border-4 border-black -rotate-6 opacity-80 hover:rotate-12 transition-transform duration-700"></div>
         <div class="absolute bottom-10 left-10 w-16 h-16 bg-nature-ember shadow-voxel border-4 border-black rotate-45 animate-bounce z-10"></div>
 
         <div class="max-w-7xl mx-auto w-full z-10 pt-20">
-            <div class="reveal bg-nature-concrete/50 inline-block p-2 border-2 border-nature-wood mb-6">
+            <div class="reveal bg-nature-concrete/80 inline-block p-2 border-2 border-nature-wood mb-6 shadow-voxel-sm">
                 <p class="font-pixel text-[10px] md:text-xs text-nature-sand uppercase tracking-widest">
                     PLAYER 1: FULL STACK DEV & AI ENGINEER
                 </p>
@@ -217,7 +168,7 @@
                 PÖNICKE
             </h1>
 
-            <div class="reveal reveal-delay-2 flex flex-col md:flex-row gap-8 items-start md:items-center max-w-2xl mt-8 border-l-4 border-nature-moss pl-6 bg-black/40 py-4">
+            <div class="reveal reveal-delay-2 flex flex-col md:flex-row gap-8 items-start md:items-center max-w-2xl mt-8 border-l-4 border-nature-moss pl-6 bg-nature-base/80 py-4 backdrop-blur-sm">
                 <p class="text-2xl md:text-3xl text-gray-400 font-sans leading-none">
                     Fusionando la robustez de <span class="text-nature-sand font-bold">Laravel</span> con la interactividad de <span class="text-nature-sand font-bold">Vue</span> y la mente de la <span class="text-nature-ember font-bold">IA</span>.
                 </p>
@@ -236,8 +187,8 @@
     <section id="about" class="py-24 px-6 bg-nature-base relative z-10 border-t-4 border-nature-concrete">
         <div class="max-w-4xl mx-auto">
             <div class="reveal bg-nature-concrete border-4 border-nature-wood p-2 shadow-voxel">
-                <div class="border-2 border-nature-base p-8 md:p-12 relative">
-                    <!-- Pixel Corner Decorations -->
+                <div class="border-2 border-nature-base p-8 md:p-12 relative bg-nature-base">
+                    <!-- Pixel Corner Decorations (Pure CSS) -->
                     <div class="absolute top-0 left-0 w-4 h-4 bg-nature-ember"></div>
                     <div class="absolute top-0 right-0 w-4 h-4 bg-nature-ember"></div>
                     <div class="absolute bottom-0 left-0 w-4 h-4 bg-nature-ember"></div>
@@ -246,7 +197,7 @@
                     <div class="text-center">
                         <span class="inline-block px-2 py-1 bg-nature-wood text-black font-pixel text-[10px] mb-6">FILOSOFÍA.TXT</span>
                         <h2 class="text-3xl md:text-5xl leading-tight font-sans">
-                            "El código no es solo sintaxis, es un <span class="text-nature-ember bg-nature-base px-2">ECOSISTEMA</span>. Creo software escalable y divertido."
+                            "El código no es solo sintaxis, es un <span class="text-nature-ember border-b-4 border-nature-ember px-1">ECOSISTEMA</span>. Creo software escalable y divertido."
                         </h2>
                     </div>
                 </div>
@@ -318,7 +269,7 @@
                 <!-- Item 3: AI (Special Item) -->
                 <div class="reveal reveal-delay-3 group bg-nature-emberDark border-4 border-black p-1 shadow-voxel hover:shadow-voxel-hover transition-all duration-200">
                     <div class="bg-nature-base h-full p-6 border-2 border-nature-ember flex flex-col justify-between relative overflow-hidden">
-                        <div class="absolute inset-0 bg-nature-ember opacity-5 animate-pulse"></div>
+                        <!-- Removed pulsing opacity overlay for cleaner DOM -->
                         <div class="flex justify-between items-start mb-6 relative z-10">
                             <i data-lucide="brain-circuit" class="w-12 h-12 text-nature-ember stroke-[1.5]"></i>
                             <span class="font-pixel text-[8px] bg-nature-ember text-black px-1 py-1">LEGENDARY</span>
@@ -363,7 +314,7 @@
 
     <!-- The Playground (Arcade Area) -->
     <section id="playground" class="py-24 px-6 bg-nature-base relative overflow-hidden">
-        <!-- Background Grid -->
+        <!-- Background Grid (Pure CSS) -->
         <div class="absolute inset-0 bg-[linear-gradient(rgba(217,108,70,0.05)_2px,transparent_2px),linear-gradient(90deg,rgba(217,108,70,0.05)_2px,transparent_2px)] bg-[size:30px_30px]"></div>
 
         <div class="max-w-7xl mx-auto relative z-10">
@@ -398,7 +349,7 @@
                         </a>
                     </div>
                     <div class="order-1 md:order-2 aspect-video bg-black border-4 border-nature-concrete relative overflow-hidden group">
-                        <!-- Simulated Game Screen -->
+                        <!-- Simulated Game Screen (Pure CSS) -->
                         <div class="absolute inset-0 flex items-center justify-center bg-nature-moss/20">
                             <div class="w-16 h-16 bg-nature-ember animate-bounce shadow-voxel border-2 border-black"></div>
                             <div class="absolute bottom-0 w-full h-8 bg-nature-moss border-t-4 border-black"></div>
@@ -499,4 +450,3 @@
     </script>
 </body>
 </html>
-
