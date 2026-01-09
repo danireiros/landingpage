@@ -3,37 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Barreiros Pönicke | Full Stack Dev 2026</title>
+    <title>Daniel Barreiros Pönicke | Full Stack Pixel Dev</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Lucide Icons -->
+    <!-- Google Fonts: Press Start 2P (Headers), VT323 (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Lucide) - We will style them to look pixelated -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Google Fonts (Inter para un look limpio similar al del sistema) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['"VT323"', 'monospace'], // Body text
+                        pixel: ['"Press Start 2P"', 'cursive'], // Headers
                     },
                     colors: {
-                        stone: {
-                            50: '#fafaf9',
-                            100: '#f5f5f4',
-                            200: '#e7e5e4',
-                            300: '#d6d3d1',
-                            400: '#a8a29e',
-                            500: '#78716c',
-                            600: '#57534e',
-                            700: '#44403c',
-                            800: '#292524',
-                            900: '#1c1917',
+                        nature: {
+                            base: '#111111',       /* Negro puro para contraste pixel */
+                            concrete: '#2d2d2d',   /* Gris oscuro plano */
+                            moss: '#4A5D44',       /* Verde militar */
+                            mossLight: '#769966',  /* Verde más brillante para highlights */
+                            wood: '#8C7B6C',       /* Marrón desaturado */
+                            sand: '#E3E1D9',       /* Crema */
+                            ember: '#FF6B4A',      /* Naranja pixel brillante */
+                            emberDark: '#9A3A1A',  /* Sombra naranja */
                         }
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2d2d2d 1px, transparent 1px), linear-gradient(to bottom, #2d2d2d 1px, transparent 1px)",
+                        // Noise SVG Pattern
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%221%22/%3E%3C/svg%3E')",
+                    },
+                    boxShadow: {
+                        'voxel': '4px 4px 0px 0px rgba(0,0,0,0.5)',
+                        'voxel-hover': '8px 8px 0px 0px rgba(217, 108, 70, 0.4)',
+                        'voxel-sm': '2px 2px 0px 0px rgba(0,0,0,0.5)',
+                        'pixel-border': 'inset 2px 2px 0px 0px #ffffff, inset -2px -2px 0px 0px #000000',
                     }
                 }
             }
@@ -41,338 +53,448 @@
     </script>
 
     <style>
-        /* Estilos base */
+        /* Retro Gaming Reset */
         body {
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
+            background-color: #111111;
+            color: #E3E1D9;
+            overflow-x: hidden;
+            image-rendering: pixelated;
         }
 
-        /* Color de selección */
-        ::selection {
-            background-color: #8FA895;
-            color: white;
+        /* Combined Retro Texture (Scanlines + Noise) */
+        .retro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
         }
 
-        /* Utilidad para animaciones de Scroll (Reemplazo del componente ScrollReveal de React) */
-        .reveal-element {
+        /* Scanlines Layer */
+        .retro-overlay::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            opacity: 0.6;
+        }
+
+        /* Static Noise Layer */
+        .retro-overlay::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%221%22/%3E%3C/svg%3E');
+            opacity: 0.08; /* Subtle grain */
+            mix-blend-mode: overlay;
+        }
+
+        /* Voxel 3D Text Effect */
+        .text-voxel {
+            text-shadow: 
+                2px 2px 0px #9A3A1A,
+                4px 4px 0px #4A5D44;
+        }
+
+        /* Pixel Reveal Animation (Steppy) */
+        .reveal {
             opacity: 0;
-            transform: translateY(3rem); /* translate-y-12 equiv */
-            filter: blur(4px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(20px);
+            transition: all 0.5s steps(4, end);
         }
 
-        .reveal-element.active {
+        .reveal.active {
             opacity: 1;
             transform: translateY(0);
-            filter: none;
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Custom Scrollbar (Blocky) */
+        ::-webkit-scrollbar {
+            width: 16px;
+            background: #111;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+            border-left: 2px solid #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D96C46;
+            border: 2px solid #000;
+            box-shadow: inset 2px 2px 0px rgba(255,255,255,0.3);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF6B4A;
+        }
+
+        /* Glitch Animation for Hover */
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-2deg); }
+            40% { transform: skew(2deg); }
+            60% { transform: skew(-1deg); }
+            80% { transform: skew(1deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        .glitch-hover:hover {
+            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: #FF6B4A;
         }
         
-        /* Retardos escalonados para elementos agrupados */
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; }
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 20s linear infinite; /* Faster for arcade feel */
+        }
+
+        /* Pixel Border Utility */
+        .border-pixel {
+            box-shadow: 
+                -4px 0 0 0 #000,
+                4px 0 0 0 #000,
+                0 -4px 0 0 #000,
+                0 4px 0 0 #000;
+            margin: 4px;
+        }
     </style>
 </head>
-<body class="bg-[#F7F7F5] text-[#1C1C1E] overflow-x-hidden">
+<body class="antialiased selection:bg-nature-ember selection:text-black relative cursor-crosshair">
 
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6 bg-transparent">
-        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
-            <span class="text-sm font-bold tracking-widest uppercase">DBP.dev</span>
-            <div class="hidden md:flex gap-8 text-sm font-medium text-stone-600">
-                <a href="#work" class="hover:text-stone-900 transition-colors">Trabajos</a>
-                <a href="#playground" class="hover:text-stone-900 transition-colors">Playground</a>
-                <a href="#contact" class="hover:text-stone-900 transition-colors">Contacto</a>
+    <!-- Retro Overlay (TV Lines + Noise) -->
+    <div class="retro-overlay"></div>
+
+    <!-- Navigation (HUD Style) -->
+    <nav class="fixed top-0 w-full z-40 px-4 py-4 border-b-4 border-nature-concrete bg-nature-base/90 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span class="font-pixel text-xs md:text-sm text-nature-ember animate-pulse">&gt; DBP_SYSTEM.EXE</span>
+            <div class="hidden md:flex gap-8 text-xl tracking-widest uppercase">
+                <a href="#about" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[SOBRE MÍ]</a>
+                <a href="#stack" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[STACK]</a>
+                <a href="#playground" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[PLAYGROUND]</a>
+                <a href="#contact" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[CONTACTO]</a>
             </div>
-            <button class="bg-[#1C1C1E] text-white px-5 py-2 rounded-full text-xs font-bold tracking-wide hover:scale-105 transition-transform">
-                Let's Talk
-            </button>
+            <a href="#contact" class="md:hidden text-nature-ember">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex flex-col justify-center px-6 md:px-12 pt-20">
-        <!-- Background Gradient Blur -->
-        <div class="absolute top-0 right-0 w-[50vw] h-[50vh] bg-gradient-to-b from-[#8FA895]/20 to-transparent blur-[100px] -z-10 rounded-bl-full opacity-60"></div>
+    <!-- Hero Section (Voxel World) -->
+    <section class="min-h-screen flex flex-col justify-center px-6 relative overflow-hidden bg-[size:40px_40px] bg-grid-pattern">
+        <!-- Voxel Decorative Cubes -->
+        <div class="absolute top-1/4 right-10 w-32 h-32 bg-nature-moss shadow-voxel border-4 border-black rotate-12 opacity-50"></div>
         
-        <div class="container mx-auto">
-            <!-- Status Badge -->
-            <div class="reveal-element flex items-center gap-3 mb-6">
-                <span class="w-2 h-2 rounded-full bg-[#8FA895] animate-pulse"></span>
-                <span class="text-xs font-semibold tracking-[0.2em] text-stone-500 uppercase">Disponible para proyectos 2026</span>
+        <!-- Moved the dark ember cube to the top-left area to balance the composition -->
+        <div class="absolute top-1/3 left-1/4 w-24 h-24 bg-nature-emberDark shadow-voxel border-4 border-black -rotate-6 opacity-60"></div>
+        
+        <!-- MOVED: Bouncing Orange Cube to Bottom Left -->
+        <div class="absolute bottom-10 left-10 w-16 h-16 bg-nature-ember shadow-voxel border-4 border-black rotate-45 animate-bounce z-10"></div>
+
+        <div class="max-w-7xl mx-auto w-full z-10 pt-20">
+            <div class="reveal bg-nature-concrete/50 inline-block p-2 border-2 border-nature-wood mb-6">
+                <p class="font-pixel text-[10px] md:text-xs text-nature-sand uppercase tracking-widest">
+                    PLAYER 1: FULL STACK DEV & AI ENGINEER
+                </p>
             </div>
             
-            <!-- Title -->
-            <div class="reveal-element delay-100">
-                <h1 class="text-5xl md:text-8xl font-bold tracking-tight leading-[1.1] mb-8 text-[#1C1C1E]">
-                    Daniel Barreiros<br />
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#8FA895] to-[#4A5D4F]">Pönicke.</span>
-                </h1>
-            </div>
+            <h1 class="reveal reveal-delay-1 font-pixel text-3xl md:text-5xl lg:text-6xl leading-tight text-nature-sand mb-8 text-voxel">
+                DANIEL<br>
+                <span class="text-nature-ember">BARREIROS</span><br>
+                PÖNICKE
+            </h1>
 
-            <!-- Description -->
-            <div class="reveal-element delay-200">
-                <p class="text-xl md:text-2xl text-stone-500 max-w-2xl leading-relaxed mb-12">
-                    Ingeniero Full Stack especializando en la fusión de arquitecturas robustas <span class="text-stone-800 font-medium">(Laravel)</span>, interfaces reactivas <span class="text-stone-800 font-medium">(Vue)</span> e <span class="text-stone-800 font-medium">Inteligencia Artificial</span>.
+            <div class="reveal reveal-delay-2 flex flex-col md:flex-row gap-8 items-start md:items-center max-w-2xl mt-8 border-l-4 border-nature-moss pl-6 bg-black/40 py-4">
+                <p class="text-2xl md:text-3xl text-gray-400 font-sans leading-none">
+                    Fusionando la robustez de <span class="text-nature-sand font-bold">Laravel</span> con la interactividad de <span class="text-nature-sand font-bold">Vue</span> y la mente de la <span class="text-nature-ember font-bold">IA</span>.
                 </p>
             </div>
 
-            <!-- Skills Grid -->
-            <div class="reveal-element delay-300">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl">
-                    <!-- Skill 1 -->
-                    <div class="flex items-center gap-3 p-4 bg-white/50 backdrop-blur-md border border-stone-200 rounded-2xl hover:bg-white transition-colors duration-300 shadow-sm group">
-                        <div class="p-2 bg-[#8FA895]/10 rounded-xl group-hover:bg-[#8FA895]/20 transition-colors text-[#4A5D4F]">
-                            <i data-lucide="layers" width="20" height="20"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-stone-800 text-sm">Arquitectura Backend</h4>
-                            <p class="text-xs text-stone-500">Laravel Expert</p>
-                        </div>
-                    </div>
-                    <!-- Skill 2 -->
-                    <div class="flex items-center gap-3 p-4 bg-white/50 backdrop-blur-md border border-stone-200 rounded-2xl hover:bg-white transition-colors duration-300 shadow-sm group">
-                        <div class="p-2 bg-[#8FA895]/10 rounded-xl group-hover:bg-[#8FA895]/20 transition-colors text-[#4A5D4F]">
-                            <i data-lucide="code" width="20" height="20"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-stone-800 text-sm">Frontend Interactivo</h4>
-                            <p class="text-xs text-stone-500">Vue.js Ecosystem</p>
-                        </div>
-                    </div>
-                    <!-- Skill 3 -->
-                    <div class="flex items-center gap-3 p-4 bg-white/50 backdrop-blur-md border border-stone-200 rounded-2xl hover:bg-white transition-colors duration-300 shadow-sm group">
-                        <div class="p-2 bg-[#8FA895]/10 rounded-xl group-hover:bg-[#8FA895]/20 transition-colors text-[#4A5D4F]">
-                            <i data-lucide="sparkles" width="20" height="20"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-stone-800 text-sm">Next-Gen Tech</h4>
-                            <p class="text-xs text-stone-500">AI Integration</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-            <span class="text-[10px] uppercase tracking-widest">Explorar</span>
-            <div class="w-[1px] h-12 bg-stone-300"></div>
-        </div>
-    </section>
-
-    <!-- Selected Work -->
-    <section id="work" class="py-32 container mx-auto px-6 md:px-12">
-        <div class="reveal-element">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-                <div>
-                    <h2 class="text-4xl font-bold mb-4">Desarrollo Profesional</h2>
-                    <p class="text-stone-500 max-w-md">Soluciones empresariales escalables construidas con estándares modernos de ingeniería.</p>
-                </div>
-                <a href="#" class="flex items-center gap-2 text-sm font-bold border-b border-stone-300 pb-1 hover:border-stone-900 transition-all">
-                    Ver repositorio completo <i data-lucide="arrow-right" width="14" height="14"></i>
+            <div class="reveal reveal-delay-3 mt-12">
+                <a href="#stack" class="group inline-flex items-center gap-4 px-6 py-4 bg-nature-ember border-4 border-black shadow-voxel hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all active:translate-y-2">
+                    <span class="font-pixel text-[10px] text-black">START GAME</span>
+                    <i data-lucide="arrow-down" class="text-black w-4 h-4 animate-bounce"></i>
                 </a>
             </div>
         </div>
+    </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Project 1 -->
-            <div class="reveal-element delay-100">
-                <div class="relative overflow-hidden rounded-3xl transition-all duration-500 hover:shadow-xl group bg-stone-100 aspect-[4/3] md:aspect-[16/9]">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
-                        <div>
-                            <div class="flex gap-2 mb-4">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-stone-500 bg-white/60 px-2 py-1 rounded-full backdrop-blur-sm">Laravel</span>
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-stone-500 bg-white/60 px-2 py-1 rounded-full backdrop-blur-sm">Vue 3</span>
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-stone-500 bg-white/60 px-2 py-1 rounded-full backdrop-blur-sm">Docker</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-stone-900 mb-2 group-hover:translate-x-1 transition-transform">SaaS Enterprise Core</h3>
-                            <p class="text-stone-600 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                                Plataforma de gestión multi-tenant construida con Laravel 11 y Vue 3. Integración de pipelines CI/CD y tests automatizados.
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-end">
-                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-stone-900 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                                <i data-lucide="arrow-right" width="18" height="18"></i>
-                            </div>
-                        </div>
+    <!-- Philosophy / About (RPG Dialog Box) -->
+    <section id="about" class="py-24 px-6 bg-nature-base relative z-10 border-t-4 border-nature-concrete">
+        <div class="max-w-4xl mx-auto">
+            <div class="reveal bg-nature-concrete border-4 border-nature-wood p-2 shadow-voxel">
+                <div class="border-2 border-nature-base p-8 md:p-12 relative">
+                    <!-- Pixel Corner Decorations -->
+                    <div class="absolute top-0 left-0 w-4 h-4 bg-nature-ember"></div>
+                    <div class="absolute top-0 right-0 w-4 h-4 bg-nature-ember"></div>
+                    <div class="absolute bottom-0 left-0 w-4 h-4 bg-nature-ember"></div>
+                    <div class="absolute bottom-0 right-0 w-4 h-4 bg-nature-ember"></div>
+
+                    <div class="text-center">
+                        <span class="inline-block px-2 py-1 bg-nature-wood text-black font-pixel text-[10px] mb-6">FILOSOFÍA.TXT</span>
+                        <h2 class="text-3xl md:text-5xl leading-tight font-sans">
+                            "El código no es solo sintaxis, es un <span class="text-nature-ember bg-nature-base px-2">ECOSISTEMA</span>. Creo software escalable y divertido."
+                        </h2>
                     </div>
-                    <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-[#8FA895]/20 rounded-full blur-3xl group-hover:bg-[#8FA895]/30 transition-colors duration-700"></div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Professional Stack (Inventory System) -->
+    <section id="stack" class="py-24 px-6 bg-[#161616] relative">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 border-b-4 border-nature-concrete pb-4 reveal">
+                <div>
+                    <h3 class="font-pixel text-2xl md:text-3xl text-nature-sand text-shadow-sm">INVENTORY <span class="text-nature-ember blink">_</span></h3>
+                    <p class="text-nature-wood font-sans text-xl mt-2">Herramientas equipadas</p>
+                </div>
+                <div class="text-right hidden md:block font-pixel text-[10px]">
+                    <p class="text-nature-mossLight">HP: 100%</p>
+                    <p class="text-nature-ember">MP: 100%</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Item 1: Laravel -->
+                <div class="reveal reveal-delay-1 group bg-nature-concrete border-4 border-black p-1 shadow-voxel hover:shadow-voxel-hover transition-all duration-200">
+                    <div class="bg-nature-base h-full p-6 border-2 border-nature-wood/30 flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-6">
+                            <i data-lucide="server" class="w-12 h-12 text-nature-moss stroke-[1.5]"></i>
+                            <span class="font-pixel text-[8px] bg-nature-moss text-black px-1 py-1">LVL.99</span>
+                        </div>
+                        <div>
+                            <h4 class="font-pixel text-sm mb-2 text-nature-sand">LARAVEL</h4>
+                            <div class="w-full h-2 bg-black mb-4 border border-white/20">
+                                <div class="h-full bg-nature-moss w-[95%]"></div>
+                            </div>
+                            <p class="text-gray-400 text-xl leading-none mb-4">
+                                Arquitectura Backend Robusta. APIs y Bases de datos masivas.
+                            </p>
+                        </div>
+                        <div class="flex gap-2 flex-wrap font-pixel text-[8px]">
+                            <span class="bg-nature-concrete border border-nature-wood px-2 py-1 text-nature-sand">PHP 8.3</span>
+                            <span class="bg-nature-concrete border border-nature-wood px-2 py-1 text-nature-sand">LIVEWIRE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2: Vue.js -->
+                <div class="reveal reveal-delay-2 group bg-nature-concrete border-4 border-black p-1 shadow-voxel hover:shadow-voxel-hover transition-all duration-200">
+                    <div class="bg-nature-base h-full p-6 border-2 border-nature-wood/30 flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-6">
+                            <i data-lucide="layout" class="w-12 h-12 text-nature-mossLight stroke-[1.5]"></i>
+                            <span class="font-pixel text-[8px] bg-nature-mossLight text-black px-1 py-1">LVL.85</span>
+                        </div>
+                        <div>
+                            <h4 class="font-pixel text-sm mb-2 text-nature-sand">VUE.JS</h4>
+                            <div class="w-full h-2 bg-black mb-4 border border-white/20">
+                                <div class="h-full bg-nature-mossLight w-[85%]"></div>
+                            </div>
+                            <p class="text-gray-400 text-xl leading-none mb-4">
+                                Interfaces reactivas. El HUD de tu aplicación web.
+                            </p>
+                        </div>
+                        <div class="flex gap-2 flex-wrap font-pixel text-[8px]">
+                            <span class="bg-nature-concrete border border-nature-wood px-2 py-1 text-nature-sand">NUXT</span>
+                            <span class="bg-nature-concrete border border-nature-wood px-2 py-1 text-nature-sand">PINIA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3: AI (Special Item) -->
+                <div class="reveal reveal-delay-3 group bg-nature-emberDark border-4 border-black p-1 shadow-voxel hover:shadow-voxel-hover transition-all duration-200">
+                    <div class="bg-nature-base h-full p-6 border-2 border-nature-ember flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute inset-0 bg-nature-ember opacity-5 animate-pulse"></div>
+                        <div class="flex justify-between items-start mb-6 relative z-10">
+                            <i data-lucide="brain-circuit" class="w-12 h-12 text-nature-ember stroke-[1.5]"></i>
+                            <span class="font-pixel text-[8px] bg-nature-ember text-black px-1 py-1">LEGENDARY</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h4 class="font-pixel text-sm mb-2 text-nature-ember">AI CORE</h4>
+                            <div class="w-full h-2 bg-black mb-4 border border-white/20">
+                                <div class="h-full bg-nature-ember w-[100%] animate-pulse"></div>
+                            </div>
+                            <p class="text-gray-400 text-xl leading-none mb-4">
+                                Implementación de LLMs, Python y Automatización. La magia negra.
+                            </p>
+                        </div>
+                        <div class="flex gap-2 flex-wrap font-pixel text-[8px] relative z-10">
+                            <span class="bg-nature-ember/20 border border-nature-ember px-2 py-1 text-nature-ember">OPENAI</span>
+                            <span class="bg-nature-ember/20 border border-nature-ember px-2 py-1 text-nature-ember">PYTHON</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee (8-bit Ticker) -->
+    <div class="py-6 bg-nature-ember border-y-4 border-black overflow-hidden flex relative">
+        <div class="animate-marquee flex gap-12 whitespace-nowrap font-pixel text-xs md:text-sm text-black font-bold uppercase select-none">
+            <span>*** TAILWIND CSS ***</span>
+            <span>MYSQL</span>
+            <span>DOCKER CONTAINER</span>
+            <span>THREE.JS RENDERER</span>
+            <span>GIT VERSION CONTROL</span>
+            <span>FIGMA DESIGN</span>
+            <span>VITE BUILD</span>
+            <span>*** TAILWIND CSS ***</span>
+            <span>MYSQL</span>
+            <span>DOCKER CONTAINER</span>
+            <span>THREE.JS RENDERER</span>
+            <span>GIT VERSION CONTROL</span>
+            <span>FIGMA DESIGN</span>
+        </div>
+    </div>
+
+    <!-- The Playground (Arcade Area) -->
+    <section id="playground" class="py-24 px-6 bg-nature-base relative overflow-hidden">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(217,108,70,0.05)_2px,transparent_2px),linear-gradient(90deg,rgba(217,108,70,0.05)_2px,transparent_2px)] bg-[size:30px_30px]"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="mb-16 reveal border-l-8 border-nature-ember pl-6">
+                <h3 class="font-pixel text-2xl md:text-4xl text-nature-sand mb-4">ARCADE / HOBBY</h3>
+                <p class="text-nature-wood font-sans text-2xl max-w-xl">
+                    Insert Coin to Play. Videojuegos, experimentos y arte con código.
+                </p>
+            </div>
+
+            <div class="space-y-16">
+                
+                <!-- Project 1: Unity Game -->
+                <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-nature-concrete/50 p-4 border-4 border-black shadow-voxel">
+                    <div class="order-2 md:order-1 space-y-4 px-4">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="gamepad-2" class="text-nature-ember"></i>
+                            <span class="font-pixel text-[10px] text-nature-wood">UNITY ENGINE</span>
+                        </div>
+                        <h4 class="font-pixel text-lg md:text-xl text-nature-sand glitch-hover cursor-pointer">Echoes of Green</h4>
+                        <p class="text-gray-400 font-sans text-xl">
+                            Plataformero 2D con físicas avanzadas.
+                        </p>
+                        <ul class="font-pixel text-[9px] text-nature-mossLight space-y-2 list-disc list-inside">
+                            <li>Sistemas de partículas C#</li>
+                            <li>Narrativa ambiental</li>
+                            <li>Pixel Art propio</li>
+                        </ul>
+                        <br>
+                        <a href="#" class="inline-block bg-black border-2 border-nature-ember text-nature-ember px-4 py-2 font-pixel text-[10px] hover:bg-nature-ember hover:text-black transition-colors">
+                            PRESS START
+                        </a>
+                    </div>
+                    <div class="order-1 md:order-2 aspect-video bg-black border-4 border-nature-concrete relative overflow-hidden group">
+                        <!-- Simulated Game Screen -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-nature-moss/20">
+                            <div class="w-16 h-16 bg-nature-ember animate-bounce shadow-voxel border-2 border-black"></div>
+                            <div class="absolute bottom-0 w-full h-8 bg-nature-moss border-t-4 border-black"></div>
+                        </div>
+                        <div class="absolute top-2 left-2 font-pixel text-[8px] text-white">SCORE: 00450</div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Vibe Coding -->
+                <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-nature-concrete/50 p-4 border-4 border-black shadow-voxel">
+                    <div class="aspect-video bg-[#0a0a0a] border-4 border-nature-concrete p-4 font-sans text-lg text-nature-ember overflow-hidden font-mono leading-tight">
+                        <span class="text-nature-mossLight">user@dbp:~$</span> ./run_vibe.sh<br>
+                        <span class="text-white">Loading aesthetics... [OK]</span><br>
+                        <span class="text-white">Applying orange tint... [OK]</span><br>
+                        <span class="text-nature-ember blink">_</span>
+                    </div>
+                    <div class="space-y-4 px-4">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="code-2" class="text-nature-ember"></i>
+                            <span class="font-pixel text-[10px] text-nature-wood">RAW HTML/CSS</span>
+                        </div>
+                        <h4 class="font-pixel text-lg md:text-xl text-nature-sand glitch-hover cursor-pointer">Vibe Coding</h4>
+                        <p class="text-gray-400 font-sans text-xl">
+                            Desafíos de código estético. Creatividad pura sin frameworks.
+                        </p>
+                        <a href="#" class="inline-block bg-black border-2 border-nature-ember text-nature-ember px-4 py-2 font-pixel text-[10px] hover:bg-nature-ember hover:text-black transition-colors">
+                            VIEW SOURCE
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Game Over Screen) -->
+    <footer id="contact" class="bg-black pt-24 pb-12 px-6 border-t-4 border-nature-ember relative">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="font-pixel text-2xl md:text-4xl text-nature-sand mb-8 leading-relaxed">
+                GAME OVER?<br>
+                <span class="text-nature-ember">CONTINUE?</span>
+            </h2>
             
-            <!-- Project 2 -->
-            <div class="reveal-element delay-200">
-                <div class="relative overflow-hidden rounded-3xl transition-all duration-500 hover:shadow-xl group bg-stone-100 aspect-[4/3] md:aspect-[16/9]">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
-                        <div>
-                            <div class="flex gap-2 mb-4">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-stone-500 bg-white/60 px-2 py-1 rounded-full backdrop-blur-sm">Python</span>
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-stone-500 bg-white/60 px-2 py-1 rounded-full backdrop-blur-sm">TensorFlow</span>
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-stone-500 bg-white/60 px-2 py-1 rounded-full backdrop-blur-sm">React</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-stone-900 mb-2 group-hover:translate-x-1 transition-transform">AI Content Neural Net</h3>
-                            <p class="text-stone-600 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                                Generador de contenido semántico utilizando OpenAI API y embeddings vectoriales para búsqueda contextual.
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-end">
-                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-stone-900 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                                <i data-lucide="arrow-right" width="18" height="18"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-[#8FA895]/20 rounded-full blur-3xl group-hover:bg-[#8FA895]/30 transition-colors duration-700"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- The Playground / Hobby Section -->
-    <section id="playground" class="py-32 bg-[#1C1C1E] text-[#F7F7F5] rounded-t-[3rem] relative overflow-hidden">
-        <!-- Decorative Grid -->
-        <div class="absolute inset-0 opacity-20" style="background-image: url('https://grainy-gradients.vercel.app/noise.svg');"></div>
-        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-
-        <div class="container mx-auto px-6 md:px-12 relative z-10">
-            <div class="reveal-element">
-                <div class="mb-20 text-center">
-                    <span class="inline-block py-1 px-3 rounded-full bg-white/10 text-xs font-mono mb-4 text-[#8FA895]">~/casual-mode</span>
-                    <h2 class="text-4xl md:text-6xl font-bold mb-6">The Playground</h2>
-                    <p class="text-white/60 max-w-2xl mx-auto text-lg">
-                        Donde la perfección se encuentra con la experimentación. Game dev, retos de código virales y scripts rápidos.
-                    </p>
-                </div>
+            <div class="flex justify-center gap-8 mb-12">
+                <a href="mailto:daniel@example.com" class="bg-nature-ember border-4 border-white text-black font-pixel text-xs md:text-sm px-6 py-4 shadow-voxel hover:translate-y-1 hover:shadow-none transition-all">
+                    YES (CONTACT)
+                </a>
+                <span class="bg-nature-concrete border-4 border-nature-wood text-gray-500 font-pixel text-xs md:text-sm px-6 py-4 opacity-50 cursor-not-allowed">
+                    NO
+                </span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Vibe Coding -->
-                <div class="reveal-element delay-100">
-                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all h-full flex flex-col group cursor-pointer">
-                        <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-300 mb-4 group-hover:scale-110 transition-transform">
-                            <i data-lucide="zap" width="20" height="20"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Vibe Coding</h3>
-                        <p class="text-sm text-white/50 mb-4 flex-grow">Participación en retos virales de UI/UX. Interfaces rápidas con "look & feel" único.</p>
-                        <div class="flex items-center gap-2 text-xs font-mono text-purple-300">
-                            <span>#SpeedRun</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Unity Games -->
-                <div class="reveal-element delay-200">
-                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all h-full flex flex-col group cursor-pointer">
-                        <div class="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center text-orange-300 mb-4 group-hover:scale-110 transition-transform">
-                            <i data-lucide="gamepad-2" width="20" height="20"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Unity Labs</h3>
-                        <p class="text-sm text-white/50 mb-4 flex-grow">Prototipos de físicas 3D y shaders personalizados. Desarrollo C#.</p>
-                        <div class="flex items-center gap-2 text-xs font-mono text-orange-300">
-                            <span>#GameDev</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Scripts -->
-                <div class="reveal-element delay-300">
-                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all h-full flex flex-col group cursor-pointer">
-                        <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-300 mb-4 group-hover:scale-110 transition-transform">
-                            <i data-lucide="terminal" width="20" height="20"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">HTML/JS Scripts</h3>
-                        <p class="text-sm text-white/50 mb-4 flex-grow">Herramientas de utilidad, bookmarklets y pequeños experimentos de DOM puro.</p>
-                        <div class="flex items-center gap-2 text-xs font-mono text-blue-300">
-                            <span>#VanillaJS</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3D Web -->
-                <div class="reveal-element delay-400">
-                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all h-full flex flex-col group cursor-pointer">
-                        <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center text-green-300 mb-4 group-hover:scale-110 transition-transform">
-                            <i data-lucide="box" width="20" height="20"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">WebGL Experiments</h3>
-                        <p class="text-sm text-white/50 mb-4 flex-grow">Three.js y React Fiber. Explorando el espacio 3D en el navegador.</p>
-                        <div class="flex items-center gap-2 text-xs font-mono text-green-300">
-                            <span>#ThreeJS</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer / Contact -->
-    <footer id="contact" class="bg-[#F7F7F5] py-24 px-6 md:px-12">
-        <div class="container mx-auto max-w-4xl text-center">
-            <div class="reveal-element">
-                <h2 class="text-3xl md:text-5xl font-bold mb-8 text-[#1C1C1E]">
-                    ¿Tienes una idea compleja?<br/>
-                    <span class="text-[#8FA895]">Hagámosla simple.</span>
-                </h2>
-                <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-16">
-                    <button class="flex items-center gap-3 bg-[#1C1C1E] text-white px-8 py-4 rounded-full font-bold hover:bg-stone-800 transition-colors shadow-lg shadow-stone-300/50 group">
-                        <i data-lucide="mail" width="18" height="18"></i>
-                        <span>Contactar ahora</span>
-                        <i data-lucide="arrow-right" class="group-hover:translate-x-1 transition-transform" width="16" height="16"></i>
-                    </button>
-                    <button class="flex items-center gap-3 px-8 py-4 rounded-full font-bold border border-stone-300 hover:bg-white transition-colors">
-                        <i data-lucide="github" width="18" height="18"></i>
-                        <span>GitHub</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex justify-between items-center border-t border-stone-200 pt-8 text-xs text-stone-500 font-medium">
-                <p>© 2026 Daniel Barreiros Pönicke. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <a href="#" class="hover:text-stone-900">Twitter</a>
-                    <a href="#" class="hover:text-stone-900">LinkedIn</a>
-                    <a href="#" class="hover:text-stone-900">Instagram</a>
+            <div class="flex flex-col md:flex-row justify-between items-center border-t-2 border-nature-concrete pt-8 font-pixel text-[10px] text-nature-wood">
+                <p>© 2026 DBP CARTRIDGE</p>
+                <div class="flex gap-4 mt-4 md:mt-0 uppercase">
+                    <a href="#" class="hover:text-nature-ember">LinkedIn</a>
+                    <a href="#" class="hover:text-nature-ember">GitHub</a>
+                    <a href="#" class="hover:text-nature-ember">Itch.io</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts de Funcionalidad -->
+    <!-- Scripts -->
     <script>
-        // Inicializar Iconos
+        // Initialize Icons
         lucide.createIcons();
 
-        // 1. Lógica del Navbar (Scroll effect)
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.remove('py-6', 'bg-transparent');
-                navbar.classList.add('bg-[#F7F7F5]/80', 'backdrop-blur-xl', 'border-b', 'border-stone-200', 'py-4');
-            } else {
-                navbar.classList.add('py-6', 'bg-transparent');
-                navbar.classList.remove('bg-[#F7F7F5]/80', 'backdrop-blur-xl', 'border-b', 'border-stone-200', 'py-4');
-            }
-        });
-
-        // 2. Lógica de Scroll Reveal (Animaciones al aparecer)
+        // Custom Intersection Observer
         document.addEventListener('DOMContentLoaded', () => {
             const observerOptions = {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 
             };
 
-            const observer = new IntersectionObserver((entries) => {
+            const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        observer.unobserve(entry.target); // Dejar de observar una vez animado
                     }
                 });
             }, observerOptions);
 
-            const elements = document.querySelectorAll('.reveal-element');
-            elements.forEach(el => observer.observe(el));
+            const hiddenElements = document.querySelectorAll('.reveal');
+            hiddenElements.forEach((el) => observer.observe(el));
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
     </script>
 </body>
