@@ -1,453 +1,487 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Barreiros Pönicke | Full Stack Pixel Dev</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Press Start 2P (Headers), VT323 (Body) -->
+    <title>Inicio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    
-    <!-- Icons (Lucide) -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"VT323"', 'monospace'], // Body text
-                        pixel: ['"Press Start 2P"', 'cursive'], // Headers
-                    },
-                    colors: {
-                        nature: {
-                            base: '#111111',       /* Negro puro */
-                            concrete: '#2d2d2d',   /* Gris oscuro plano */
-                            moss: '#4A5D44',       /* Verde militar */
-                            mossLight: '#769966',  /* Verde más brillante */
-                            wood: '#8C7B6C',       /* Marrón desaturado */
-                            sand: '#E3E1D9',       /* Crema */
-                            ember: '#FF6B4A',      /* Naranja pixel brillante */
-                            emberDark: '#9A3A1A',  /* Sombra naranja */
-                        }
-                    },
-                    backgroundImage: {
-                        // Simple CSS Grid Pattern (No images, pure CSS)
-                        'grid-pattern': "linear-gradient(to right, #222 1px, transparent 1px), linear-gradient(to bottom, #222 1px, transparent 1px)",
-                    },
-                    boxShadow: {
-                        'voxel': '4px 4px 0px 0px rgba(0,0,0,0.5)',
-                        'voxel-hover': '8px 8px 0px 0px rgba(217, 108, 70, 0.4)',
-                        'voxel-sm': '2px 2px 0px 0px rgba(0,0,0,0.5)',
-                        'pixel-border': 'inset 2px 2px 0px 0px #ffffff, inset -2px -2px 0px 0px #000000',
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* General Reset */
+        /* Alineado con tailwind.config.js (apple-*) y resources/css/app.css */
+        :root {
+            --apple-gray: #f5f5f7;
+            --apple-dark: #1d1d1f;
+            --apple-orange: #ff9500;
+            --apple-orange-hover: #e08300;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --white: #ffffff;
+            --shadow-apple: 0 4px 24px rgba(0, 0, 0, 0.04);
+            --shadow-apple-hover: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E");
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #111111;
-            color: #E3E1D9;
-            overflow-x: hidden;
-            /* Ensures images keep hard edges for pixel look */
-            image-rendering: pixelated; 
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--apple-dark);
+            background-color: var(--white);
+            background-image: var(--noise);
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Voxel 3D Text Effect using text-shadow */
-        .text-voxel {
-            text-shadow: 
-                3px 3px 0px #9A3A1A,
-                6px 6px 0px #4A5D44;
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease;
         }
 
-        /* CSS Animation for Reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s steps(4, end); /* Steps creates the jerky "frame by frame" feel */
+        .top-bar.is-scrolled {
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
         }
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
+        .top-inner {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-
-        /* Custom Blocky Scrollbar */
-        ::-webkit-scrollbar {
-            width: 16px;
-            background: #111;
-        }
-        ::-webkit-scrollbar-track {
-            background: #2d2d2d;
-            border-left: 2px solid #000;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #D96C46;
-            border: 2px solid #000;
-            box-shadow: inset 2px 2px 0px rgba(255,255,255,0.3);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #FF6B4A;
+        @media (min-width: 1024px) {
+            .top-inner {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
         }
 
-        /* Glitch Text Effect on Hover (Pure CSS) */
-        @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(-2deg); }
-            40% { transform: skew(2deg); }
-            60% { transform: skew(-1deg); }
-            80% { transform: skew(1deg); }
-            100% { transform: skew(0deg); }
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            color: var(--apple-dark);
+            text-decoration: none;
         }
 
-        .glitch-hover:hover {
-            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            color: #FF6B4A;
+        .brand:hover {
+            color: var(--apple-dark);
         }
-        
-        /* Marquee Animation */
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+
+        .brand-dot {
+            color: var(--apple-orange);
         }
-        .animate-marquee {
-            animation: marquee 20s linear infinite;
+
+        .meta {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-500);
+        }
+
+        .meta strong {
+            color: var(--apple-dark);
+            font-weight: 600;
+        }
+
+        .main {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        @media (min-width: 1024px) {
+            .main {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        .kicker {
+            margin: 0 0 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--apple-orange);
+        }
+
+        @media (min-width: 768px) {
+            .kicker {
+                font-size: 1rem;
+            }
+        }
+
+        .panel {
+            border-radius: 2rem;
+            border: 1px solid var(--gray-100);
+            background: var(--white);
+            box-shadow: var(--shadow-apple);
+            padding: 1.75rem 1.5rem 2rem;
+        }
+
+        @media (min-width: 640px) {
+            .panel {
+                padding: 2rem 2rem 2.25rem;
+                border-radius: 2.5rem;
+            }
+        }
+
+        .search-block {
+            margin-bottom: 2rem;
+        }
+
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .search-form {
+                flex-direction: row;
+                align-items: stretch;
+            }
+        }
+
+        .search-input-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-input {
+            width: 100%;
+            border-radius: 1rem;
+            border: 2px solid transparent;
+            background: var(--apple-gray);
+            padding: 1rem 1.25rem;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--apple-dark);
+            outline: none;
+            transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .search-input:focus {
+            background: var(--white);
+            border-color: var(--apple-orange);
+            box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.15);
+        }
+
+        .btn-search {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: none;
+            border-radius: 9999px;
+            padding: 1rem 2rem;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--white);
+            background: var(--apple-orange);
+            box-shadow: 0 10px 15px -3px rgba(255, 149, 0, 0.25);
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.1s ease;
+            white-space: nowrap;
+        }
+
+        .btn-search:hover {
+            background: var(--apple-orange-hover);
+        }
+
+        .btn-search:active {
+            transform: translateY(1px);
+        }
+
+        .grid-title {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--apple-dark);
+        }
+
+        @media (min-width: 768px) {
+            .grid-title {
+                font-size: 1.875rem;
+            }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+            }
+        }
+
+        .link-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 6.5rem;
+            padding: 1rem 0.75rem;
+            text-decoration: none;
+            color: var(--gray-700);
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow-apple);
+            transition: box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        @media (min-width: 640px) {
+            .link-card {
+                border-radius: 2.5rem;
+            }
+        }
+
+        .link-card:hover {
+            box-shadow: var(--shadow-apple-hover);
+            transform: translateY(-2px) scale(1.02);
+            color: var(--apple-dark);
+            border-color: var(--gray-200);
+        }
+
+        .link-card i {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--apple-orange);
+            transition: transform 0.2s ease;
+        }
+
+        .link-card:hover i {
+            transform: scale(1.08);
+        }
+
+        .link-card__mark {
+            margin-bottom: 0.5rem;
+            line-height: 0;
+        }
+
+        .link-card__mark svg {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: block;
+            border-radius: 0.65rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .link-card--brand:hover .link-card__mark svg {
+            transform: scale(1.08);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        }
+
+        .link-card span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.25;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        footer span:last-child {
+            font-weight: 500;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-nature-ember selection:text-black relative">
-
-    <!-- REMOVED: .retro-overlay (Scanlines/Noise) for a cleaner look -->
-
-    <!-- Navigation (HUD Style) -->
-    <nav class="fixed top-0 w-full z-40 px-4 py-4 border-b-4 border-nature-concrete bg-nature-base/95 backdrop-blur-sm">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <span class="font-pixel text-xs md:text-sm text-nature-ember hover:animate-pulse cursor-default">&gt; DANIELBARREIROS.ES</span>
-            <div class="hidden md:flex gap-8 text-xl tracking-widest uppercase">
-                <a href="#about" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[SOBRE MÍ]</a>
-                <a href="#stack" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[STACK]</a>
-                <a href="#playground" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[PLAYGROUND]</a>
-                <a href="#contact" class="hover:text-nature-ember hover:underline decoration-4 decoration-nature-moss transition-all">[CONTACTO]</a>
+<body>
+    <header class="top-bar" id="topBar" role="banner">
+        <div class="top-inner">
+            <a class="brand" href="https://danielbarreiros.es/">Inicio<span class="brand-dot">.</span></a>
+            <div class="meta">
+                <strong id="date">--</strong>
             </div>
-            <a href="#contact" class="md:hidden text-nature-ember">
-                <i data-lucide="menu" class="w-8 h-8"></i>
-            </a>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section (Voxel World - Pure CSS Shapes) -->
-    <section class="min-h-screen flex flex-col justify-center px-6 relative overflow-hidden bg-[size:40px_40px] bg-grid-pattern">
-        
-        <!-- CSS Voxels (Divs with shadows and borders) -->
-        <div class="absolute top-1/4 right-10 w-32 h-32 bg-nature-moss shadow-voxel border-4 border-black rotate-12 opacity-80 hover:rotate-45 transition-transform duration-700"></div>
-        <div class="absolute top-1/3 left-1/4 w-24 h-24 bg-nature-emberDark shadow-voxel border-4 border-black -rotate-6 opacity-80 hover:rotate-12 transition-transform duration-700"></div>
-        <div class="absolute bottom-10 left-10 w-16 h-16 bg-nature-ember shadow-voxel border-4 border-black rotate-45 animate-bounce z-10"></div>
+    <main class="main">
+        <p class="kicker">Navegador</p>
 
-        <div class="max-w-7xl mx-auto w-full z-10 pt-20">
-            <div class="reveal bg-nature-concrete/80 inline-block p-2 border-2 border-nature-wood mb-6 shadow-voxel-sm">
-                <p class="font-pixel text-[10px] md:text-xs text-nature-sand uppercase tracking-widest">
-                    PLAYER 1: FULL STACK DEV & AI ENGINEER & CONTENT ARTIST
-                </p>
-            </div>
-            
-            <h1 class="reveal reveal-delay-1 font-pixel text-3xl md:text-5xl lg:text-6xl leading-tight text-nature-sand mb-8 text-voxel">
-                DANIEL<br>
-                <span class="text-nature-ember">BARREIROS</span><br>
-                PÖNICKE
-            </h1>
-
-            <div class="reveal reveal-delay-2 flex flex-col md:flex-row gap-8 items-start md:items-center max-w-2xl mt-8 border-l-4 border-nature-moss pl-6 bg-nature-base/80 py-4 backdrop-blur-sm">
-                <p class="text-2xl md:text-3xl text-gray-400 font-sans leading-none">
-                    Fusionando la robustez de <span class="text-nature-sand font-bold">Laravel</span> con la interactividad de <span class="text-nature-sand font-bold">Vue</span> y la mente de la <span class="text-nature-ember font-bold">IA</span>.
-                </p>
+        <div class="panel">
+            <div class="search-block">
+                <form action="https://search.brave.com/search" method="get" class="search-form" role="search">
+                    <div class="search-input-wrap">
+                        <label for="q" class="sr-only">Búsqueda</label>
+                        <input
+                            id="q"
+                            type="text"
+                            name="q"
+                            class="search-input"
+                            placeholder="Buscar en Brave…"
+                            autocomplete="off"
+                            autofocus
+                        >
+                    </div>
+                    <button type="submit" class="btn-search">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        Buscar
+                    </button>
+                </form>
             </div>
 
-            <div class="reveal reveal-delay-3 mt-12">
-                <a href="#stack" class="group inline-flex items-center gap-4 px-6 py-4 bg-nature-ember border-4 border-black shadow-voxel hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all active:translate-y-2">
-                    <span class="font-pixel text-[10px] text-black">START GAME</span>
-                    <i data-lucide="arrow-down" class="text-black w-4 h-4 animate-bounce"></i>
+            <h2 class="grid-title">Accesos</h2>
+            <div class="grid">
+                <a href="https://danielbarreiros.es/" class="link-card link-card--brand" title="danielbarreiros.es">
+                    <div class="link-card__mark" aria-hidden="true">
+                        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                            <defs>
+                                <linearGradient id="dbpMarkGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#2c2c2e"/>
+                                    <stop offset="100%" stop-color="#1d1d1f"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="40" height="40" rx="11" fill="url(#dbpMarkGrad)"/>
+                            <text
+                                x="19.5"
+                                y="27.5"
+                                text-anchor="middle"
+                                fill="#ffffff"
+                                font-family="Inter, system-ui, sans-serif"
+                                font-size="19"
+                                font-weight="800"
+                                letter-spacing="-0.08em"
+                            >D</text>
+                            <circle cx="31" cy="10" r="4.5" fill="#ff9500"/>
+                        </svg>
+                    </div>
+                    <span>DBP</span>
+                </a>
+                <a href="https://www.twitch.tv" class="link-card">
+                    <i class="fab fa-twitch" aria-hidden="true"></i>
+                    <span>Twitch</span>
+                </a>
+                <a href="https://www.youtube.com" class="link-card">
+                    <i class="fab fa-youtube" aria-hidden="true"></i>
+                    <span>YouTube</span>
+                </a>
+                <a href="https://www.pccomponentes.com" class="link-card">
+                    <i class="fas fa-microchip" aria-hidden="true"></i>
+                    <span>PC Comp</span>
+                </a>
+                <a href="https://github.com" class="link-card">
+                    <i class="fab fa-github" aria-hidden="true"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://www.cursor.com" class="link-card">
+                    <i class="fas fa-terminal" aria-hidden="true"></i>
+                    <span>Cursor</span>
+                </a>
+                <a href="https://www.xataka.com" class="link-card">
+                    <i class="fas fa-robot" aria-hidden="true"></i>
+                    <span>Xataka</span>
+                </a>
+                <a href="https://keep.google.com" class="link-card">
+                    <i class="fas fa-sticky-note" aria-hidden="true"></i>
+                    <span>Keep</span>
+                </a>
+                <a href="https://hpanel.hostinger.com" class="link-card">
+                    <i class="fas fa-server" aria-hidden="true"></i>
+                    <span>Hostinger</span>
+                </a>
+                <a href="https://chat.openai.com" class="link-card">
+                    <i class="fas fa-comments" aria-hidden="true"></i>
+                    <span>ChatGPT</span>
+                </a>
+                <a href="https://gemini.google.com" class="link-card">
+                    <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
+                    <span>Gemini</span>
+                </a>
+                <a href="https://claude.ai" class="link-card">
+                    <i class="fas fa-brain" aria-hidden="true"></i>
+                    <span>Claude</span>
+                </a>
+                <a href="https://www.pixilart.com" class="link-card">
+                    <i class="fas fa-palette" aria-hidden="true"></i>
+                    <span>Pixilart</span>
+                </a>
+                <a href="https://www.photopea.com" class="link-card">
+                    <i class="fas fa-palette" aria-hidden="true"></i>
+                    <span>Photopea</span>
                 </a>
             </div>
+
+            <footer>
+                <span>Daniel Barreiros Pönicke</span>
+                <span>Uso personal</span>
+            </footer>
         </div>
-    </section>
+    </main>
 
-    <!-- Philosophy / About (RPG Dialog Box) -->
-    <section id="about" class="py-24 px-6 bg-nature-base relative z-10 border-t-4 border-nature-concrete">
-        <div class="max-w-4xl mx-auto">
-            <div class="reveal bg-nature-concrete border-4 border-nature-wood p-2 shadow-voxel">
-                <div class="border-2 border-nature-base p-8 md:p-12 relative bg-nature-base">
-                    <!-- Pixel Corner Decorations (Pure CSS) -->
-                    <div class="absolute top-0 left-0 w-4 h-4 bg-nature-ember"></div>
-                    <div class="absolute top-0 right-0 w-4 h-4 bg-nature-ember"></div>
-                    <div class="absolute bottom-0 left-0 w-4 h-4 bg-nature-ember"></div>
-                    <div class="absolute bottom-0 right-0 w-4 h-4 bg-nature-ember"></div>
-
-                    <div class="text-center">
-                        <span class="inline-block px-2 py-1 bg-nature-wood text-black font-pixel text-[10px] mb-6">FILOSOFÍA.TXT</span>
-                        <h2 class="text-3xl md:text-5xl leading-tight font-sans">
-                            "El código no es solo sintaxis, es un <span class="text-nature-ember border-b-4 border-nature-ember px-1">ECOSISTEMA</span>. Creo software escalable y divertido."
-                        </h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Professional Stack (Inventory System) -->
-    <section id="stack" class="py-24 px-6 bg-[#161616] relative">
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 border-b-4 border-nature-concrete pb-4 reveal">
-                <div>
-                    <h3 class="font-pixel text-2xl md:text-3xl text-nature-sand text-shadow-sm">INVENTORY <span class="text-nature-ember blink">_</span></h3>
-                    <p class="text-nature-wood font-sans text-xl mt-2">Herramientas equipadas</p>
-                </div>
-                <div class="text-right hidden md:block font-pixel text-[10px]">
-                    <p class="text-nature-mossLight">HP: 100%</p>
-                    <p class="text-nature-ember">MP: 100%</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Item 1: Laravel -->
-                <div class="reveal reveal-delay-1 group bg-nature-concrete border-4 border-black p-1 shadow-voxel hover:shadow-voxel-hover transition-all duration-200">
-                    <div class="bg-nature-base h-full p-6 border-2 border-nature-wood/30 flex flex-col justify-between">
-                        <div class="flex justify-between items-start mb-6">
-                            <i data-lucide="server" class="w-12 h-12 text-nature-moss stroke-[1.5]"></i>
-                            <span class="font-pixel text-[8px] bg-nature-moss text-black px-1 py-1">LVL.99</span>
-                        </div>
-                        <div>
-                            <h4 class="font-pixel text-sm mb-2 text-nature-sand">LARAVEL</h4>
-                            <div class="w-full h-2 bg-black mb-4 border border-white/20">
-                                <div class="h-full bg-nature-moss w-[95%]"></div>
-                            </div>
-                            <p class="text-gray-400 text-xl leading-none mb-4">
-                                Arquitectura Backend Robusta. APIs y Bases de datos masivas.
-                            </p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap font-pixel text-[8px]">
-                            <span class="bg-nature-concrete border border-nature-wood px-2 py-1 text-nature-sand">PHP 8.3</span>
-                            <span class="bg-nature-concrete border border-nature-wood px-2 py-1 text-nature-sand">LIVEWIRE</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 2: Vue.js -->
-                <div class="reveal reveal-delay-2 group bg-nature-concrete border-4 border-black p-1 shadow-voxel hover:shadow-voxel-hover transition-all duration-200">
-                    <div class="bg-nature-base h-full p-6 border-2 border-nature-wood/30 flex flex-col justify-between">
-                        <div class="flex justify-between items-start mb-6">
-                            <i data-lucide="layout" class="w-12 h-12 text-nature-mossLight stroke-[1.5]"></i>
-                            <span class="font-pixel text-[8px] bg-nature-mossLight text-black px-1 py-1">LVL.85</span>
-                        </div>
-                        <div>
-                            <h4 class="font-pixel text-sm mb-2 text-nature-sand">VUE.JS</h4>
-                            <div class="w-full h-2 bg-black mb-4 border border-white/20">
-                                <div class="h-full bg-nature-mossLight w-[85%]"></div>
-                            </div>
-                            <p class="text-gray-400 text-xl leading-none mb-4">
-                                Interfaces reactivas. El HUD de tu aplicación web.
-                            </p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap font-pixel text-[8px]">
-                            <span class="bg-nature-concrete border border-nature-wood px-2 py-1 text-nature-sand">NUXT</span>
-                            <span class="bg-nature-concrete border border-nature-wood px-2 py-1 text-nature-sand">PINIA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 3: AI (Special Item) -->
-                <div class="reveal reveal-delay-3 group bg-nature-emberDark border-4 border-black p-1 shadow-voxel hover:shadow-voxel-hover transition-all duration-200">
-                    <div class="bg-nature-base h-full p-6 border-2 border-nature-ember flex flex-col justify-between relative overflow-hidden">
-                        <!-- Removed pulsing opacity overlay for cleaner DOM -->
-                        <div class="flex justify-between items-start mb-6 relative z-10">
-                            <i data-lucide="brain-circuit" class="w-12 h-12 text-nature-ember stroke-[1.5]"></i>
-                            <span class="font-pixel text-[8px] bg-nature-ember text-black px-1 py-1">LEGENDARY</span>
-                        </div>
-                        <div class="relative z-10">
-                            <h4 class="font-pixel text-sm mb-2 text-nature-ember">AI CORE</h4>
-                            <div class="w-full h-2 bg-black mb-4 border border-white/20">
-                                <div class="h-full bg-nature-ember w-[100%] animate-pulse"></div>
-                            </div>
-                            <p class="text-gray-400 text-xl leading-none mb-4">
-                                Implementación de LLMs, Python y Automatización. La magia negra.
-                            </p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap font-pixel text-[8px] relative z-10">
-                            <span class="bg-nature-ember/20 border border-nature-ember px-2 py-1 text-nature-ember">OPENAI</span>
-                            <span class="bg-nature-ember/20 border border-nature-ember px-2 py-1 text-nature-ember">PYTHON</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Marquee (8-bit Ticker) -->
-    <div class="py-6 bg-nature-ember border-y-4 border-black overflow-hidden flex relative">
-        <div class="animate-marquee flex gap-12 whitespace-nowrap font-pixel text-xs md:text-sm text-black font-bold uppercase select-none">
-            <span>*** TAILWIND CSS ***</span>
-            <span>MYSQL</span>
-            <span>DOCKER CONTAINER</span>
-            <span>THREE.JS RENDERER</span>
-            <span>GIT VERSION CONTROL</span>
-            <span>FIGMA DESIGN</span>
-            <span>VITE BUILD</span>
-            <span>*** TAILWIND CSS ***</span>
-            <span>MYSQL</span>
-            <span>DOCKER CONTAINER</span>
-            <span>THREE.JS RENDERER</span>
-            <span>GIT VERSION CONTROL</span>
-            <span>FIGMA DESIGN</span>
-        </div>
-    </div>
-
-    <!-- The Playground (Arcade Area) -->
-    <section id="playground" class="py-24 px-6 bg-nature-base relative overflow-hidden">
-        <!-- Background Grid (Pure CSS) -->
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(217,108,70,0.05)_2px,transparent_2px),linear-gradient(90deg,rgba(217,108,70,0.05)_2px,transparent_2px)] bg-[size:30px_30px]"></div>
-
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="mb-16 reveal border-l-8 border-nature-ember pl-6">
-                <h3 class="font-pixel text-2xl md:text-4xl text-nature-sand mb-4">ARCADE / HOBBY</h3>
-                <p class="text-nature-wood font-sans text-2xl max-w-xl">
-                    Insert Coin to Play. Videojuegos, experimentos y arte con código.
-                </p>
-            </div>
-
-            <div class="space-y-16">
-                
-                <!-- Project 1: Unity Game -->
-                <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-nature-concrete/50 p-4 border-4 border-black shadow-voxel">
-                    <div class="order-2 md:order-1 space-y-4 px-4">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="gamepad-2" class="text-nature-ember"></i>
-                            <span class="font-pixel text-[10px] text-nature-wood">UNITY ENGINE</span>
-                        </div>
-                        <h4 class="font-pixel text-lg md:text-xl text-nature-sand glitch-hover cursor-pointer">Echoes of Green</h4>
-                        <p class="text-gray-400 font-sans text-xl">
-                            Plataformero 2D con físicas avanzadas.
-                        </p>
-                        <ul class="font-pixel text-[9px] text-nature-mossLight space-y-2 list-disc list-inside">
-                            <li>Sistemas de partículas C#</li>
-                            <li>Narrativa ambiental</li>
-                            <li>Pixel Art propio</li>
-                        </ul>
-                        <br>
-                        <a href="#" class="inline-block bg-black border-2 border-nature-ember text-nature-ember px-4 py-2 font-pixel text-[10px] hover:bg-nature-ember hover:text-black transition-colors">
-                            PRESS START
-                        </a>
-                    </div>
-                    <div class="order-1 md:order-2 aspect-video bg-black border-4 border-nature-concrete relative overflow-hidden group">
-                        <!-- Simulated Game Screen (Pure CSS) -->
-                        <div class="absolute inset-0 flex items-center justify-center bg-nature-moss/20">
-                            <div class="w-16 h-16 bg-nature-ember animate-bounce shadow-voxel border-2 border-black"></div>
-                            <div class="absolute bottom-0 w-full h-8 bg-nature-moss border-t-4 border-black"></div>
-                        </div>
-                        <div class="absolute top-2 left-2 font-pixel text-[8px] text-white">SCORE: 00450</div>
-                    </div>
-                </div>
-
-                <!-- Project 2: Vibe Coding -->
-                <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-nature-concrete/50 p-4 border-4 border-black shadow-voxel">
-                    <div class="aspect-video bg-[#0a0a0a] border-4 border-nature-concrete p-4 font-sans text-lg text-nature-ember overflow-hidden font-mono leading-tight">
-                        <span class="text-nature-mossLight">user@dbp:~$</span> ./run_vibe.sh<br>
-                        <span class="text-white">Loading aesthetics... [OK]</span><br>
-                        <span class="text-white">Applying orange tint... [OK]</span><br>
-                        <span class="text-nature-ember blink">_</span>
-                    </div>
-                    <div class="space-y-4 px-4">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="code-2" class="text-nature-ember"></i>
-                            <span class="font-pixel text-[10px] text-nature-wood">RAW HTML/CSS</span>
-                        </div>
-                        <h4 class="font-pixel text-lg md:text-xl text-nature-sand glitch-hover cursor-pointer">Vibe Coding</h4>
-                        <p class="text-gray-400 font-sans text-xl">
-                            Desafíos de código estético. Creatividad pura sin frameworks.
-                        </p>
-                        <a href="#" class="inline-block bg-black border-2 border-nature-ember text-nature-ember px-4 py-2 font-pixel text-[10px] hover:bg-nature-ember hover:text-black transition-colors">
-                            VIEW SOURCE
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer (Game Over Screen) -->
-    <footer id="contact" class="bg-black pt-24 pb-12 px-6 border-t-4 border-nature-ember relative">
-        <div class="max-w-7xl mx-auto text-center">
-            <h2 class="font-pixel text-2xl md:text-4xl text-nature-sand mb-8 leading-relaxed">
-                GAME OVER?<br>
-                <span class="text-nature-ember">CONTINUE?</span>
-            </h2>
-            
-            <div class="flex justify-center gap-8 mb-12">
-                <a href="mailto:daniel@example.com" class="bg-nature-ember border-4 border-white text-black font-pixel text-xs md:text-sm px-6 py-4 shadow-voxel hover:translate-y-1 hover:shadow-none transition-all">
-                    YES (CONTACT)
-                </a>
-                <span class="bg-nature-concrete border-4 border-nature-wood text-gray-500 font-pixel text-xs md:text-sm px-6 py-4 opacity-50 cursor-not-allowed">
-                    NO
-                </span>
-            </div>
-
-            <div class="flex flex-col md:flex-row justify-between items-center border-t-2 border-nature-concrete pt-8 font-pixel text-[10px] text-nature-wood">
-                <p>© 2026 Daniel Barreiros</p>
-                <div class="flex gap-4 mt-4 md:mt-0 uppercase">
-                    <a href="https://www.linkedin.com/in/daniel-barreiros/" class="hover:text-nature-ember">LinkedIn</a>
-                    <a href="https://github.com/danireiros" class="hover:text-nature-ember">GitHub</a>
-                    <a href="mailto:danireiros@gmail.com" class="hover:text-nature-ember">Email</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
     <script>
-        // Initialize Icons
-        lucide.createIcons();
-
-        // Custom Intersection Observer
-        document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1 
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
-                });
-            }, observerOptions);
-
-            const hiddenElements = document.querySelectorAll('.reveal');
-            hiddenElements.forEach((el) => observer.observe(el));
+        const dateEl = document.getElementById("date");
+        const topBar = document.getElementById("topBar");
+        dateEl.textContent = new Date().toLocaleDateString("es-ES", {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+            year: "numeric",
         });
 
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+        function onScroll() {
+            if (window.scrollY > 20) {
+                topBar.classList.add("is-scrolled");
+            } else {
+                topBar.classList.remove("is-scrolled");
+            }
+        }
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
     </script>
 </body>
 </html>
-
