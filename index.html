@@ -4,484 +4,449 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('theme');
+                if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        /* Alineado con tailwind.config.js (apple-*) y resources/css/app.css */
-        :root {
-            --apple-gray: #f5f5f7;
-            --apple-dark: #1d1d1f;
-            --apple-orange: #ff9500;
-            --apple-orange-hover: #e08300;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --white: #ffffff;
-            --shadow-apple: 0 4px 24px rgba(0, 0, 0, 0.04);
-            --shadow-apple-hover: 0 10px 40px rgba(0, 0, 0, 0.08);
-            --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E");
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-            color: var(--apple-dark);
-            background-color: var(--white);
-            background-image: var(--noise);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .top-bar {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .top-bar.is-scrolled {
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        }
-
-        .top-inner {
-            max-width: 72rem;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            height: 4rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        @media (min-width: 1024px) {
-            .top-inner {
-                padding-left: 2rem;
-                padding-right: 2rem;
-            }
-        }
-
-        .brand {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.025em;
-            color: var(--apple-dark);
-            text-decoration: none;
-        }
-
-        .brand:hover {
-            color: var(--apple-dark);
-        }
-
-        .brand-dot {
-            color: var(--apple-orange);
-        }
-
-        .meta {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--gray-500);
-        }
-
-        .meta strong {
-            color: var(--apple-dark);
-            font-weight: 600;
-        }
-
-        .main {
-            max-width: 72rem;
-            margin: 0 auto;
-            padding: 2rem 1.5rem 3rem;
-        }
-
-        @media (min-width: 1024px) {
-            .main {
-                padding-left: 2rem;
-                padding-right: 2rem;
-            }
-        }
-
-        .kicker {
-            margin: 0 0 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--apple-orange);
-        }
-
-        @media (min-width: 768px) {
-            .kicker {
-                font-size: 1rem;
-            }
-        }
-
-        .panel {
-            border-radius: 2rem;
-            border: 1px solid var(--gray-100);
-            background: var(--white);
-            box-shadow: var(--shadow-apple);
-            padding: 1.75rem 1.5rem 2rem;
-        }
-
-        @media (min-width: 640px) {
-            .panel {
-                padding: 2rem 2rem 2.25rem;
-                border-radius: 2.5rem;
-            }
-        }
-
-        .search-block {
-            margin-bottom: 2rem;
-        }
-
-        .search-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        @media (min-width: 640px) {
-            .search-form {
-                flex-direction: row;
-                align-items: stretch;
-            }
-        }
-
-        .search-input-wrap {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .search-input {
-            width: 100%;
-            border-radius: 1rem;
-            border: 2px solid transparent;
-            background: var(--apple-gray);
-            padding: 1rem 1.25rem;
-            font-family: inherit;
-            font-size: 1rem;
-            color: var(--apple-dark);
-            outline: none;
-            transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .search-input::placeholder {
-            color: var(--gray-400);
-        }
-
-        .search-input:focus {
-            background: var(--white);
-            border-color: var(--apple-orange);
-            box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.15);
-        }
-
-        .btn-search {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            border: none;
-            border-radius: 9999px;
-            padding: 1rem 2rem;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--white);
-            background: var(--apple-orange);
-            box-shadow: 0 10px 15px -3px rgba(255, 149, 0, 0.25);
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.1s ease;
-            white-space: nowrap;
-        }
-
-        .btn-search:hover {
-            background: var(--apple-orange-hover);
-        }
-
-        .btn-search:active {
-            transform: translateY(1px);
-        }
-
-        .grid-title {
-            margin: 0 0 1rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            color: var(--apple-dark);
-        }
-
-        @media (min-width: 768px) {
-            .grid-title {
-                font-size: 1.875rem;
-            }
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-            gap: 1rem;
-        }
-
-        @media (min-width: 640px) {
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-            }
-        }
-
-        .link-card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 6.5rem;
-            padding: 1rem 0.75rem;
-            text-decoration: none;
-            color: var(--gray-700);
-            background: var(--white);
-            border: 1px solid var(--gray-100);
-            border-radius: 1.5rem;
-            box-shadow: var(--shadow-apple);
-            transition: box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-        }
-
-        @media (min-width: 640px) {
-            .link-card {
-                border-radius: 2.5rem;
-            }
-        }
-
-        .link-card:hover {
-            box-shadow: var(--shadow-apple-hover);
-            transform: translateY(-2px) scale(1.02);
-            color: var(--apple-dark);
-            border-color: var(--gray-200);
-        }
-
-        .link-card i {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--apple-orange);
-            transition: transform 0.2s ease;
-        }
-
-        .link-card:hover i {
-            transform: scale(1.08);
-        }
-
-        .link-card__mark {
-            margin-bottom: 0.5rem;
-            line-height: 0;
-        }
-
-        .link-card__mark svg {
-            width: 2.5rem;
-            height: 2.5rem;
-            display: block;
-            border-radius: 0.65rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .link-card--brand:hover .link-card__mark svg {
-            transform: scale(1.08);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-        }
-
-        .link-card span {
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-align: center;
-            line-height: 1.25;
-        }
-
-        footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--gray-200);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 0.75rem;
-            font-size: 0.875rem;
-            color: var(--gray-500);
-        }
-
-        footer span:last-child {
-            font-weight: 500;
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="css/app.css">
+    <script src="js/palette.js"></script>
 </head>
 <body>
-    <header class="top-bar" id="topBar" role="banner">
-        <div class="top-inner">
-            <a class="brand" href="https://danielbarreiros.es/">Inicio<span class="brand-dot">.</span></a>
-            <div class="meta">
-                <strong id="date">--</strong>
-            </div>
-        </div>
-    </header>
+    <div class="ambient-canvas" id="ambientCanvas" data-palette="warm" aria-hidden="true">
+        <div class="ambient-nature"></div>
+        <div class="ambient-blob ambient-blob--1"></div>
+        <div class="ambient-blob ambient-blob--2"></div>
+        <div class="ambient-blob ambient-blob--3"></div>
+        <div class="ambient-blob ambient-blob--4"></div>
+        <div class="ambient-blob ambient-blob--5"></div>
+        <div class="ambient-blob ambient-blob--6"></div>
+    </div>
 
-    <main class="main">
-        <p class="kicker">Navegador</p>
-
-        <div class="panel">
-            <div class="search-block">
-                <form action="https://search.brave.com/search" method="get" class="search-form" role="search">
-                    <div class="search-input-wrap">
-                        <label for="q" class="sr-only">Búsqueda</label>
+    <div class="page-content">
+        <nav class="glass" id="topBar" role="banner" style="position: fixed; z-index: 50; width: 100%; transition: box-shadow 0.3s ease;">
+            <div class="nav-inner">
+                <a class="brand text-theme" href="#inicio">
+                    D<span class="text-gradient-warm">BP</span>
+                </a>
+                <fieldset class="theme-switcher" id="themeSwitcher">
+                    <legend class="sr-only">Elegir tema</legend>
+                    <label class="theme-switcher__option">
                         <input
-                            id="q"
-                            type="text"
-                            name="q"
-                            class="search-input"
-                            placeholder="Buscar en Brave…"
-                            autocomplete="off"
-                            autofocus
+                            class="theme-switcher__input"
+                            type="radio"
+                            name="theme"
+                            value="light"
+                            data-option="1"
+                            checked
                         >
-                    </div>
-                    <button type="submit" class="btn-search">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                        Buscar
-                    </button>
-                </form>
-            </div>
-
-            <h2 class="grid-title">Accesos</h2>
-            <div class="grid">
-                <a href="https://danielbarreiros.es/" class="link-card link-card--brand" title="danielbarreiros.es">
-                    <div class="link-card__mark" aria-hidden="true">
-                        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                            <defs>
-                                <linearGradient id="dbpMarkGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#2c2c2e"/>
-                                    <stop offset="100%" stop-color="#1d1d1f"/>
-                                </linearGradient>
-                            </defs>
-                            <rect width="40" height="40" rx="11" fill="url(#dbpMarkGrad)"/>
-                            <text
-                                x="19.5"
-                                y="27.5"
-                                text-anchor="middle"
-                                fill="#ffffff"
-                                font-family="Inter, system-ui, sans-serif"
-                                font-size="19"
-                                font-weight="800"
-                                letter-spacing="-0.08em"
-                            >D</text>
-                            <circle cx="31" cy="10" r="4.5" fill="#ff9500"/>
+                        <svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4"/>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
                         </svg>
+                    </label>
+                    <label class="theme-switcher__option">
+                        <input
+                            class="theme-switcher__input"
+                            type="radio"
+                            name="theme"
+                            value="dark"
+                            data-option="2"
+                        >
+                        <svg class="theme-switcher__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                        </svg>
+                    </label>
+                </fieldset>
+            </div>
+        </nav>
+
+        <main class="main" id="inicio">
+            <div class="dashboard">
+            <div class="dashboard__links">
+            <div class="liquidGlass-wrapper rounded-3xl">
+                <div class="liquidGlass-effect rounded-3xl"></div>
+                <div class="liquidGlass-tint rounded-3xl"></div>
+                <div class="liquidGlass-shine rounded-3xl"></div>
+                <div class="liquidGlass-text rounded-3xl panel-padding">
+                    <header class="page-header">
+                        <h1 class="page-title">Accesos rápidos</h1>
+                        <p class="page-meta" id="date">--</p>
+                    </header>
+                    <div class="search-block">
+                        <form action="https://search.brave.com/search" method="get" class="search-form" role="search">
+                            <div class="search-input-wrap">
+                                <label for="q" class="sr-only">Búsqueda</label>
+                                <input
+                                    id="q"
+                                    type="text"
+                                    name="q"
+                                    class="glass-input"
+                                    placeholder="Buscar en Brave…"
+                                    autocomplete="off"
+                                    autofocus
+                                >
+                            </div>
+                            <button type="submit" class="liquid-glass glass-white btn-pill-lg">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                Buscar
+                            </button>
+                        </form>
                     </div>
-                    <span>DBP</span>
-                </a>
-                <a href="https://www.twitch.tv" class="link-card">
-                    <i class="fab fa-twitch" aria-hidden="true"></i>
-                    <span>Twitch</span>
-                </a>
-                <a href="https://www.youtube.com" class="link-card">
-                    <i class="fab fa-youtube" aria-hidden="true"></i>
-                    <span>YouTube</span>
-                </a>
-                <a href="https://www.pccomponentes.com" class="link-card">
-                    <i class="fas fa-microchip" aria-hidden="true"></i>
-                    <span>PC Comp</span>
-                </a>
-                <a href="https://github.com" class="link-card">
-                    <i class="fab fa-github" aria-hidden="true"></i>
-                    <span>GitHub</span>
-                </a>
-                <a href="https://www.cursor.com" class="link-card">
-                    <i class="fas fa-terminal" aria-hidden="true"></i>
-                    <span>Cursor</span>
-                </a>
-                <a href="https://www.xataka.com" class="link-card">
-                    <i class="fas fa-robot" aria-hidden="true"></i>
-                    <span>Xataka</span>
-                </a>
-                <a href="https://keep.google.com" class="link-card">
-                    <i class="fas fa-sticky-note" aria-hidden="true"></i>
-                    <span>Keep</span>
-                </a>
-                <a href="https://hpanel.hostinger.com" class="link-card">
-                    <i class="fas fa-server" aria-hidden="true"></i>
-                    <span>Hostinger</span>
-                </a>
-                <a href="https://chat.openai.com" class="link-card">
-                    <i class="fas fa-comments" aria-hidden="true"></i>
-                    <span>ChatGPT</span>
-                </a>
-                <a href="https://gemini.google.com" class="link-card">
-                    <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
-                    <span>Gemini</span>
-                </a>
-                <a href="https://claude.ai" class="link-card">
-                    <i class="fas fa-brain" aria-hidden="true"></i>
-                    <span>Claude</span>
-                </a>
-                <a href="https://www.pixilart.com" class="link-card">
-                    <i class="fas fa-palette" aria-hidden="true"></i>
-                    <span>Pixilart</span>
-                </a>
-                <a href="https://www.photopea.com" class="link-card">
-                    <i class="fas fa-palette" aria-hidden="true"></i>
-                    <span>Photopea</span>
-                </a>
+
+                    <div class="categories">
+                        <section class="category">
+                            <h2 class="category__title">Personal</h2>
+                            <div class="grid">
+                                <a href="https://danielbarreiros.es/" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl" title="danielbarreiros.es">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <div class="link-card__mark" aria-hidden="true">
+                                            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                                                <defs>
+                                                    <linearGradient id="dbpMarkGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                                        <stop offset="0%" stop-color="#2c2c2e"/>
+                                                        <stop offset="100%" stop-color="#1d1d1f"/>
+                                                    </linearGradient>
+                                                </defs>
+                                                <rect width="40" height="40" rx="11" fill="url(#dbpMarkGrad)"/>
+                                                <text x="19.5" y="27.5" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="19" font-weight="800" letter-spacing="-0.08em">D</text>
+                                                <circle cx="31" cy="10" r="4.5" fill="#ff9500"/>
+                                            </svg>
+                                        </div>
+                                        <span>DBP</span>
+                                    </div>
+                                </a>
+                                <a href="https://h1.danielbarreiros.es" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl" title="h1.danielbarreiros.es">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-globe" aria-hidden="true"></i>
+                                        <span>H1</span>
+                                    </div>
+                                </a>
+                                <a href="https://pokerai.danielbarreiros.es" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl" title="pokerai.danielbarreiros.es">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-robot" aria-hidden="true"></i>
+                                        <span>PokerAI</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="category">
+                            <h2 class="category__title">Entretenimiento</h2>
+                            <div class="grid">
+                                <a href="https://www.twitch.tv" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fab fa-twitch" aria-hidden="true"></i>
+                                        <span>Twitch</span>
+                                    </div>
+                                </a>
+                                <a href="https://www.youtube.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fab fa-youtube" aria-hidden="true"></i>
+                                        <span>YouTube</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="category">
+                            <h2 class="category__title">Desarrollo</h2>
+                            <div class="grid">
+                                <a href="https://github.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fab fa-github" aria-hidden="true"></i>
+                                        <span>GitHub</span>
+                                    </div>
+                                </a>
+                                <a href="https://www.cursor.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-terminal" aria-hidden="true"></i>
+                                        <span>Cursor</span>
+                                    </div>
+                                </a>
+                                <a href="https://hpanel.hostinger.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-server" aria-hidden="true"></i>
+                                        <span>Hostinger</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="category">
+                            <h2 class="category__title">Productividad</h2>
+                            <div class="grid">
+                                <a href="https://keep.google.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-sticky-note" aria-hidden="true"></i>
+                                        <span>Keep</span>
+                                    </div>
+                                </a>
+                                <a href="https://www.icloud.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fab fa-apple" aria-hidden="true"></i>
+                                        <span>iCloud</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="category">
+                            <h2 class="category__title">Inteligencia artificial</h2>
+                            <div class="grid">
+                                <a href="https://chat.openai.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-comments" aria-hidden="true"></i>
+                                        <span>ChatGPT</span>
+                                    </div>
+                                </a>
+                                <a href="https://gemini.google.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
+                                        <span>Gemini</span>
+                                    </div>
+                                </a>
+                                <a href="https://claude.ai" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-brain" aria-hidden="true"></i>
+                                        <span>Claude</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="category">
+                            <h2 class="category__title">Creatividad</h2>
+                            <div class="grid">
+                                <a href="https://www.pixilart.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-palette" aria-hidden="true"></i>
+                                        <span>Pixilart</span>
+                                    </div>
+                                </a>
+                                <a href="https://www.photopea.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-image" aria-hidden="true"></i>
+                                        <span>Photopea</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="category">
+                            <h2 class="category__title">Tech</h2>
+                            <div class="grid">
+                                <a href="https://www.pccomponentes.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-microchip" aria-hidden="true"></i>
+                                        <span>PC Comp</span>
+                                    </div>
+                                </a>
+                                <a href="https://www.xataka.com" class="link-card liquidGlass-wrapper liquidGlass-wrapper--hover rounded-2xl">
+                                    <div class="liquidGlass-effect rounded-2xl"></div>
+                                    <div class="liquidGlass-tint rounded-2xl"></div>
+                                    <div class="liquidGlass-shine rounded-2xl"></div>
+                                    <div class="liquidGlass-text rounded-2xl">
+                                        <i class="fas fa-robot" aria-hidden="true"></i>
+                                        <span>Xataka</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
             </div>
 
-            <footer>
-                <span>Daniel Barreiros Pönicke</span>
-                <span>Uso personal</span>
-            </footer>
-        </div>
-    </main>
+            <aside class="dashboard__weather">
+                <div class="liquidGlass-wrapper rounded-3xl">
+                    <div class="liquidGlass-effect rounded-3xl"></div>
+                    <div class="liquidGlass-tint rounded-3xl"></div>
+                    <div class="liquidGlass-shine rounded-3xl"></div>
+                    <div class="liquidGlass-text rounded-3xl panel-padding">
+                        <div class="weather-widget is-loading">
+                            <h2 class="weather-widget__title">Tiempo</h2>
+                            <p class="weather-status" id="weatherStatus">Cargando…</p>
+
+                            <div class="weather-hero">
+                                <div class="weather-sky" id="weatherSky" data-phase="day">
+                                    <div class="weather-stars" id="weatherStars" aria-hidden="true"></div>
+                                    <svg class="weather-sky__arc" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                                        <path class="weather-sky__arc-line" d="M 8 72 A 42 42 0 0 1 92 72" />
+                                    </svg>
+                                    <div class="weather-sky__horizon" aria-hidden="true"></div>
+                                    <i class="fas fa-cloud weather-sky__cloud weather-sky__cloud--1" aria-hidden="true"></i>
+                                    <i class="fas fa-cloud weather-sky__cloud weather-sky__cloud--2" aria-hidden="true"></i>
+                                    <i class="fas fa-cloud weather-sky__cloud weather-sky__cloud--3" aria-hidden="true"></i>
+                                    <div class="weather-celestial" id="weatherCelestial">
+                                        <div class="weather-sun-disc" id="weatherSunDisc" aria-hidden="true"></div>
+                                        <div class="weather-moon-disc" id="weatherMoonDisc" aria-hidden="true">
+                                            <div class="weather-moon-disc__light"></div>
+                                            <div class="weather-moon-disc__shadow" id="weatherMoonShadow"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="weather-time-block">
+                                    <time class="weather-clock" id="weatherClock">--:--:--</time>
+                                    <p class="weather-moon-phase" id="weatherMoonPhaseLabel" hidden></p>
+                                </div>
+
+                                <div class="weather-now">
+                                    <p class="weather-location" id="weatherLocation">—</p>
+                                    <div class="weather-now__row">
+                                        <i class="fas fa-sun weather-now__icon" id="weatherIcon" aria-hidden="true"></i>
+                                        <div>
+                                            <div class="weather-temp" id="weatherTemp">--°</div>
+                                            <p class="weather-desc" id="weatherDesc">—</p>
+                                        </div>
+                                    </div>
+                                    <div class="weather-stats">
+                                        <div class="weather-stat">
+                                            <i class="fas fa-droplet" aria-hidden="true"></i>
+                                            <strong id="weatherHumidity">—</strong>
+                                            <span>Humedad</span>
+                                        </div>
+                                        <div class="weather-stat">
+                                            <i class="fas fa-wind" aria-hidden="true"></i>
+                                            <strong id="weatherWind">—</strong>
+                                            <span>Viento</span>
+                                        </div>
+                                        <div class="weather-stat">
+                                            <i class="fas fa-temperature-half" aria-hidden="true"></i>
+                                            <strong id="weatherFeels">—</strong>
+                                            <span>Sensación</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <section class="weather-section">
+                                <h3 class="weather-section__title">Próximas horas</h3>
+                                <div class="weather-hourly" id="weatherHourly"></div>
+                            </section>
+
+                            <section class="weather-section">
+                                <h3 class="weather-section__title">Próximos días</h3>
+                                <div class="weather-daily" id="weatherDaily"></div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            </div>
+        </main>
+    </div>
 
     <script>
-        const dateEl = document.getElementById("date");
-        const topBar = document.getElementById("topBar");
-        dateEl.textContent = new Date().toLocaleDateString("es-ES", {
-            weekday: "short",
-            day: "numeric",
-            month: "short",
-            year: "numeric",
+        const STORAGE_KEY = 'theme';
+        const dateEl = document.getElementById('date');
+        const topBar = document.getElementById('topBar');
+        const themeInputs = document.querySelectorAll('.theme-switcher__input');
+
+        dateEl.textContent = new Date().toLocaleDateString('es-ES', {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
         });
+
+        function applyTheme(value) {
+            document.documentElement.setAttribute('data-theme', value);
+            localStorage.setItem(STORAGE_KEY, value);
+        }
+
+        function syncThemeInputs() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            themeInputs.forEach((input) => {
+                input.checked = input.value === current;
+            });
+        }
+
+        themeInputs.forEach((input) => {
+            input.addEventListener('change', () => {
+                if (input.checked) {
+                    applyTheme(input.value);
+                }
+            });
+        });
+
+        syncThemeInputs();
 
         function onScroll() {
             if (window.scrollY > 20) {
-                topBar.classList.add("is-scrolled");
+                topBar.classList.add('shadow-sm');
             } else {
-                topBar.classList.remove("is-scrolled");
+                topBar.classList.remove('shadow-sm');
             }
         }
+
         onScroll();
-        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            window.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 40;
+                const y = (e.clientY / window.innerHeight - 0.5) * 40;
+                document.documentElement.style.setProperty('--tx', x + 'px');
+                document.documentElement.style.setProperty('--ty', y + 'px');
+            }, { passive: true });
+        }
     </script>
+    <script src="js/weather.js"></script>
 </body>
 </html>
