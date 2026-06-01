@@ -120,9 +120,23 @@ body {
     pointer-events: none;
 }
 
+.ambient-blobs {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    contain: layout style paint;
+    transition: opacity 2.8s ease-in-out;
+}
+
+.ambient-blobs.is-visible {
+    opacity: 1;
+}
+
 .ambient-blob {
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     border-radius: 50%;
     filter: blur(85px) saturate(160%);
     opacity: 0.92;
@@ -237,6 +251,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
     .ambient-blob { animation: none !important; }
     .ambient-canvas { transition: none; }
+    .ambient-blobs { transition: none; }
 }
 
 /* --- Liquid glass panels --- */
